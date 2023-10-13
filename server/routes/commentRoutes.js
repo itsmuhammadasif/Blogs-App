@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const commentController = require('../controllers/comment.controllers');
-const {validateCommentCreation} = require('../middleware/comment.validation.middleware')
+const { validateCommentCreation } = require('../middleware/comment.validation.middleware')
 
-router.post('/blogs/:blogId/comments', validateCommentCreation, commentController.createComment);
 
-router.get('/blogs/:blogId/comments', commentController.getComments);
+router.post('/blogs/:blogId/comments/post', validateCommentCreation, commentController.createComment);
 
-router.delete('/comments/:commentId', commentController.deleteComment);
+router.get('/blogs/:blogId/comments',  commentController.getComments);
+
+router.delete('/comments/:commentId',  commentController.deleteComment);
 
 module.exports = router;
