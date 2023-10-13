@@ -1,5 +1,5 @@
-const { Comment, Blog } = require('../models');
-const { User } = require('../models')
+const { Comment, Blog, User } = require('../models');
+
 exports.createComment = async (req, res) => {
     try {
         const { text, userId, name, email } = req.body;
