@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     author: {
-      type:  DataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false
     },
     createdAt: {
