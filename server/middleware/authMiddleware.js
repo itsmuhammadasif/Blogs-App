@@ -1,7 +1,4 @@
-const express = require('express');
-const router = express.Router();
 const jwt = require('jsonwebtoken');
-const { User } = require('../models');
 
 module.exports = async (req, res, next) => {
   const token = req.header('Authorization');
