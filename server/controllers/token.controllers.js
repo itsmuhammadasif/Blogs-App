@@ -1,9 +1,4 @@
 const jwt = require('jsonwebtoken');
-const express = require('express');
-const router = express.Router();
-const authMiddleware = require('../middleware/authMiddleware');
-
-
 
 exports.verifyTokens = async (req, res) => {
   const token = req.header('Authorization');
