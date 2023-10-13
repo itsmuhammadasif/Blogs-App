@@ -1,11 +1,7 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const { User } = require('../models');
-const { body, validationResult } = require('express-validator');
-const express = require('express');
-const router = express.Router();
-const authMiddleware = require('../middleware/authMiddleware');
 const { generateToken } = require('../tokens/tokenGenerator')
+const { validationResult } = require('express-validator');
 
 
 exports.createUser = async (req, res) => {
