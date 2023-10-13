@@ -6,7 +6,7 @@ const validateCommentCreation = [
   body('name').notEmpty().withMessage('Name is required'),
   body('email').isEmail().withMessage('Invalid email format'),
 
-  (req,res,next) => {
+  (req, res, next) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
