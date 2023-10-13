@@ -1,0 +1,324 @@
+openapi: 3.0.0
+tags: 
+  - name: User
+    description: User Registration and Login
+  - name: Blog
+    description: Blogs Management
+  - name: Comment
+    description: API operations for blog comments
+  - name: Token
+    description: API operations for user authentication tokens
+
+components:
+  schemas:
+    UserLogin:
+      type: object
+      properties:
+        email:
+          type: string
+          description: The email address of the user
+          x-display: input
+        password:
+          type: string
+          description: The user's password
+          x-display: input
+      required:
+        - email
+        - password
+    UserSignup:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the user
+          x-display: input
+        email:
+          type: string
+          description: The email address of the user
+          x-display: input
+        password:
+          type: string
+          description: The user's password
+          x-display: input
+      required:
+        - name
+        - email
+        - password
+
+    Blog:
+      type: object
+      required:
+        - title
+        - body
+        - author
+      properties:
+        title:
+          type: string
+          description: The title of the blog
+        body:
+          type: string
+          description: The content/body of the blog
+        author:
+          type: string
+          description: The author of the blog
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+        text:
+          type: string
+          description: The text of the comment.
+        userId:
+          type: integer
+          description: The ID of the user who made the comment.
+        name:
+          type: string
+          description: The name of the user who made the comment.
+        email:
+          type: string
+          description: The email of the user who made the comment.
+        blogId:
+          type: integer
+          description: The ID of the blog where the comment is associated.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+  securitySchemes:
+    bearerAuth:    
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Enter your JWT Token
+paths:
+  /signup:
+    post:
+      summary: Sign up as a new user
+      tags: [User]
+      description: Create a new user account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSignup'
+      responses:
+        '201':
+          description: User registration successful
+        '400':
+          description: Bad request, validation failed
+        '500':
+          description: Internal server error
+
+  /login:
+    post:
+      summary: User Login
+      tags: [User]
+      description: Login to your account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+      responses:
+        '201':
+          description: Login successful
+         
+        '401':
+          description: Unauthorized, invalid credentials
+        '500':
+          description: Internal server error
+/blogs:
+  get:
+    summary: Get a list of blogs
+    security:
+      - bearerAuth: [] 
+    tags: [Blog]
+    description: Retrieve a list of blogs
+    responses:
+      '200':
+        description: A list of blogs
+      '401':
+        description: Unauthorized
+      '500':
+        description: Internal server error
+
+/blogs/{id}:
+  get:
+    summary: Get a blog by ID
+    tags: [Blog]
+    description: Retrieve a blog by its ID.
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: ID of the blog to retrieve
+        schema:
+          type: string
+    responses:
+      '200':
+        description: The requested blog
+
+      '404':
+        description: Blog not found
+      '500':
+        description: Internal server error
+
+/create:
+  post:
+    security:
+      - bearerAuth: []
+    summary: Create a new blog
+    tags: [Blog]
+    description: Create a new blog by providing the required information.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Blog'
+    responses:
+      '201':
+        description: Blog created successfully
+      '400':
+        description: Bad request, validation failed
+      '401':
+        description: Unauthorized
+      '500':
+        description: Internal server error
+
+/blogs/{blogId}:
+  delete:
+    summary: Delete a blog by ID
+    tags: [Blog]
+    description: Delete a blog by its ID.
+    parameters:
+      - in: path
+        name: blogId
+        required: true
+        description: The ID of the blog to delete.
+        schema:
+        type: integer
+    responses:
+      '200':
+        description: Blog deleted successfully
+      '404':
+        description: Blog not found
+      '500':
+        description: Internal server error
+
+/blogs/{blogId}/comments/post:
+  post:
+    summary: Create a Comment
+    tags: [Comment]
+    parameters:
+      - in: path
+        name: blogId
+        required: true
+        schema:
+          type: integer
+        description: The ID of the blog where the comment is being created.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - text
+              - userId
+              - name
+              - email
+              - blogId
+            properties:
+              text:
+                type: string
+                description: The text of the comment.
+              userId:
+                type: integer
+                description: The ID of the user who made the comment.
+              name:
+                type: string
+                description: The name of the user who made the comment.
+              email:
+                type: string
+                description: The email of the user who made the comment.
+    responses:
+      '201':
+        description: Comment created successfully
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      '400':
+        description: Bad request, validation failed
+      '404':
+        description: Blog not found
+      '500':
+        description: Internal server error
+/blogs/{blogId}/comments:
+  get:
+    summary: Get Comments for a Blog
+    tags: [Comment]
+    parameters:
+      - in: path
+        name: blogId
+        required: true
+        schema:
+          type: integer
+        description: The ID of the blog.
+    responses:
+      '200':
+        description: Comments retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Comment'
+      '500':
+        description: Internal server error
+
+/comments/{commentId}:
+  delete:
+    summary: Delete a Comment
+    tags:
+      - Comment
+    parameters:
+      - in: path
+        name: commentId
+        required: true
+        schema:
+          type: integer
+        description: The ID of the comment to be deleted.
+    responses:
+      '200':
+        description: Comment deleted successfully
+      '404':
+        description: Comment not found
+      '500':
+        description: Internal server error
+/verify-token:
+  get:
+    security:
+      - bearerAuth: []
+    summary: Verify user token
+    tags: [Token] 
+    description: Verify the user token to ensure it's valid and retrieve user information.
+    responses:
+      '200':
+        description: Token verification successful
+      '401':
+        description: Unauthorized, token is missing or invalid
+
+
+
+ 
+
+
+
+  
+ 
+
