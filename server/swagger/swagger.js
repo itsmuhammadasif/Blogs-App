@@ -14,7 +14,7 @@ const options = {
       },
     ],
   },
-  apis: ['../routes/authRoutes','../routes/tokenRoutes.js','../routes/blogRoutes.js','../routes/commentRoutes.js','./swagger/swaggerDoc.yaml',  ],
+  apis: ['../routes/authRoutes', '../routes/tokenRoutes.js', '../routes/blogRoutes.js', '../routes/commentRoutes.js', './swagger/swaggerDoc.yaml',],
 };
 
 const specs = swaggerJsdoc(options);
