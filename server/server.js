@@ -8,7 +8,7 @@ const tokenRoutes = require('./routes/tokenRoutes')
 const commentRoutes = require('./routes/commentRoutes')
 const db = require('./config/dbconnect')
 const swaggerUi = require('swagger-ui-express');
-const swaggerSpec = require('./swagger/swagger'); 
+const swaggerSpec = require('./swagger/swagger');
 const app = express();
 
 
@@ -19,7 +19,7 @@ const corsOptions = {
   origin: function (origin, callback) {
     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
-      console.log("That is been correctly connected with frontend.")
+      console.log("Backend connected to frontend!")
     } else {
       callback(new Error('Not allowed by CORS'));
     }
