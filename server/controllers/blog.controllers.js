@@ -1,10 +1,4 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const { Blog } = require('../models');
-const express = require('express');
-const router = express.Router();
-const authMiddleware = require('../middleware/authMiddleware');
-const client = require('../config/dbconnect')
 
 exports.getBlogs = async (req, res) => {
   try {
