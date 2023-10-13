@@ -10,9 +10,9 @@ function generateToken(user) {
     },
     process.env.SECRET_KEY
   );
+
   return token;
+
 }
 
-module.exports = {
-  generateToken,
-};
+module.exports = { generateToken };
