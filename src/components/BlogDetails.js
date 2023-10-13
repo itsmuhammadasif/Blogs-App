@@ -51,7 +51,7 @@ const BlogDetails = () => {
   const addComment = async (newComment) => {
     try {
       const axiosInstance = await getAxiosConfig();
-      const response = await axiosInstance.post(`http://localhost:3001/blogs/${id}/comments`, newComment);
+      const response = await axiosInstance.post(`http://localhost:3001/blogs/${id}/comments/post`, newComment);
       if (response.status === 201) {
         getComments();
       }
